@@ -2,26 +2,53 @@
  * 1. We have added a directive with the name 'avatar' and handler of
  * avatarDirective to our angular app module
  */
-angular.module('app', [])
-  .controller('mainCtrl', mainCtrl)
-  .directive('avatar', avatarDirective);
+var app = angular.module('app', []);
 
-function mainCtrl ($scope) {
+app.controller('mainCtrl', function mainCtrl($scope) {
 
-  $scope.users = [];
+    $scope.users = [];
 
-  $scope.addNew = function (user) {
-    $scope.users.push({ 
-      name: user.name,
-      email: user.email, 
-      avatarUrl: user.url
-    }); /* [1] */
-    
-    user.name = ''; /* [2] */
-    user.email = '';
-    user.url = '';
-  };
-}
+    $scope.addNew = function(user) {
+        $scope.users.push({
+            name: user.name,
+            email: user.email,
+            avatarUrl: user.url
+        }); /* [1] */
+
+        user.name = ''; /* [2] */
+        user.email = '';
+        user.url = '';
+    };
+});
+
+app.directive('avatar', function avatarDirective() {
+    return {
+        scope: {
+            user: '=' /* [1] */
+        },
+        restrict: 'E',
+        /* [2] */
+        replace: 'true',
+        template: (
+            '<div class="Avatar">' +
+            '<img ng-src="{{user.avatarUrl}}" />' +
+            '<h4>{{user.name}}</h4>' +
+            '<h4>{{user.email}}</h4>' +
+            '</div>'
+        ),
+        /* [3] */
+        link: link
+    };
+
+    function link(scope) { /* [4] */
+        if (!scope.user.avatarUrl) {
+            scope.user.avatarUrl = 'https://www.drupal.org/files/issues/default-avatar.png';
+        }
+    }
+
+});
+
+
 
 /**
  * 1. this defines the api of our avatar directive. This means we are
@@ -33,27 +60,3 @@ function mainCtrl ($scope) {
  * 4. Here we are implementing the feature where if there is no user avatar url,
  * we go ahead and give it a default
  */
-function avatarDirective () {
-  return {
-    scope: {
-      user: '=' /* [1] */
-    },
-    restrict: 'E', /* [2] */
-    replace: 'true',
-    template: (
-      '<div class="Avatar">' +
-        '<img ng-src="{{user.avatarUrl}}" />' +
-        '<h4>{{user.name}}</h4>' +
-        '<h4>{{user.email}}</h4>' + 
-      '</div>'
-    ), /* [3] */
-    link: link
-  };
-  
-  function link (scope) { /* [4] */
-    if (!scope.user.avatarUrl) {
-      scope.user.avatarUrl = 'https://www.drupal.org/files/issues/default-avatar.png';
-    }
-  }
-
-}

@@ -1,0 +1,27 @@
+body{
+    background-color: #FEB8F0;
+}
+
+body h1{
+    color:rgba(0,0,0,0.5);
+    background-color: inherit;
+}
+
+body ul{
+    list-style-type: none;
+    margin:0;
+    padding:0;
+    overflow: hidden;
+    background-color: #444 !important;
+}
+
+form {
+  color: #F449D2;
+  border-bottom-color: #D6C5B4;
+}
+
+.Avatar img {
+  width: 130px;
+  height: 150px;
+  border-radius: 90%;
+}
